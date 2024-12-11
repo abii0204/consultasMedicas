@@ -13,8 +13,10 @@ import java.awt.event.ActionListener;
 
 public class LoginDialog extends JDialog implements InterfaceView{
     private JPanel mainPanel;
+    private final TicketView ticketView;
 
-    public LoginDialog (){
+    public LoginDialog (TicketView ticketView){
+        this.ticketView = ticketView;
         initWindow();
         initComponents();
         setCommands();
@@ -88,7 +90,8 @@ public class LoginDialog extends JDialog implements InterfaceView{
             });
 
             // Carga la página de login en el WebView
-            webEngine.load("http://127.0.0.1:5000/form_login");
+            //webEngine.load("http://127.0.0.1:5000/form_login");
+            webEngine.load("https://erciapps.sytes.net:11151/form_login");
 
             // Establece la escena del fxPanel con el WebView para mostrar la página cargada
             fxPanel.setScene(new Scene(webView));
@@ -135,6 +138,7 @@ public class LoginDialog extends JDialog implements InterfaceView{
     private void showLoginSuccessMessage() {
         JOptionPane.showMessageDialog(this, "Login exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         this.dispose();
+        ticketView.showWindow();
     }
 
 }
