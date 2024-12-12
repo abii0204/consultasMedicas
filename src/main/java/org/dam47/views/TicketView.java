@@ -60,6 +60,7 @@ public class TicketView extends JDialog implements InterfaceView{
         setContentPane(mainPanel);
         pack();
         setLocationRelativeTo(null);
+
     }
 
     @Override

@@ -5,6 +5,8 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import org.dam47.DAO.ConsultasDAO;
+import org.dam47.controllers.VerificarCodigoController;
 import org.dam47.utils.Session;
 
 import javax.swing.*;
@@ -90,8 +92,8 @@ public class LoginDialog extends JDialog implements InterfaceView{
             });
 
             // Carga la página de login en el WebView
-            //webEngine.load("http://127.0.0.1:5000/form_login");
-            webEngine.load("https://erciapps.sytes.net:11151/form_login");
+            webEngine.load("http://127.0.0.1:5001/form_login");
+           // webEngine.load("https://erciapps.sytes.net:11151/form_login");
 
             // Establece la escena del fxPanel con el WebView para mostrar la página cargada
             fxPanel.setScene(new Scene(webView));
@@ -135,10 +137,42 @@ public class LoginDialog extends JDialog implements InterfaceView{
         // Establece el token en la sesión usando la clase Session
         Session.setToken(token);
     }
+//    private void showLoginSuccessMessage() {
+//        JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+//        ticketView.showWindow();
+//
+//    }
+
     private void showLoginSuccessMessage() {
-        JOptionPane.showMessageDialog(this, "Login exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        this.dispose();
-        ticketView.showWindow();
+        JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        //ticketView.showWindow();
+
+        String token = Session.getToken();
+        String userLogin = Session.getUsername();
+
+        // Verificamos el token con un método externo
+        if (verifyToken(token, userLogin)) {
+
+            // Obtenemos el rol del usuario
+            ConsultasDAO consultasDAO = new ConsultasDAO();
+            String rol = consultasDAO.cargarRol(userLogin);
+
+            if ("admin".equals(rol)) {
+                VerificarCodigoView validar = new VerificarCodigoView();
+                VerificarCodigoController validarTicketController = new VerificarCodigoController(validar,consultasDAO);
+                validar.addListener(validarTicketController);
+                validar.showWindow();
+            } else {
+                ticketView.showWindow();
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Token inválido o expirado", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private boolean verifyToken(String token, String userLogin) {
+        return token != null && !token.isEmpty() && userLogin != null && !userLogin.isEmpty();
     }
 
 }

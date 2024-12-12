@@ -33,7 +33,7 @@
           <forms defaultalign-horz="false"/>
         </constraints>
         <properties>
-          <text value="CONSULTA MÉDICA"/>
+          <text value="Reserva tu consulta"/>
         </properties>
       </component>
       <component id="c818" class="javax.swing.JLabel">

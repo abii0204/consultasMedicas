@@ -2,30 +2,31 @@ package org.dam47.views;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
-import java.net.URL;
 
-import static org.dam47.controllers.MainFrameController.LOGIN;
+import static org.dam47.controllers.VerificarCodigoController.BT_VALIDAR;
 
-public class MainFrame extends JFrame implements InterfaceView{
 
-    public MainFrame() {
+public class VerificarCodigoView extends JDialog implements InterfaceView{
+    private JPanel mainPanel;
+    private JTextField tx_codigo;
+    private JButton bt_validar;
+
+    public VerificarCodigoView(){
         initWindow();
         initComponents();
         setCommands();
     }
 
-    private JPanel mainPanel;
-    private JButton btn_login;
-
-    URL imageUrl = getClass().getResource("/resources/logo.png"); // Asegúrate de que 'resources' es el directorio correcto
-
-
     @Override
     public void initWindow() {
         setContentPane(mainPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack();
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        pack();
+    }
+
+    public String getTxCodigo() {
+        return tx_codigo.getText();
     }
 
     @Override
@@ -40,13 +41,12 @@ public class MainFrame extends JFrame implements InterfaceView{
 
     @Override
     public void setCommands() {
-        btn_login.setActionCommand(LOGIN);
-
+        bt_validar.setActionCommand(BT_VALIDAR);
     }
 
     @Override
     public void addListener(ActionListener listener) {
-        btn_login.addActionListener(listener);
+        bt_validar.addActionListener(listener);
     }
 
     @Override

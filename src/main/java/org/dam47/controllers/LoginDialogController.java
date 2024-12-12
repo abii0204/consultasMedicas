@@ -14,7 +14,7 @@ public class LoginDialogController implements ActionListener {
         this.loginDialog = loginDialog;
     }
 
-    public void handleAbridLogin(){
+    public void handleAbrirLogin(){
         loginDialog.showWindow();
     }
 
@@ -24,7 +24,7 @@ public class LoginDialogController implements ActionListener {
 
         switch (command) {
             case ABRIR_LOGIN:
-                handleAbridLogin();
+                handleAbrirLogin();
                 break;
             default:
                 break;

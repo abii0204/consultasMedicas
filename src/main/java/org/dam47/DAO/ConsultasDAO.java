@@ -97,6 +97,50 @@ public class ConsultasDAO extends Conexion {
         return resultado;
     }
 
+    public String cargarRol(String nombre) {
+        if (initDBConnection()) {
+            String query = "SELECT rol FROM usuarios WHERE nombre = ? OR email = ?";
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, nombre);
+                ps.setString(2, nombre);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String rol = rs.getString("rol");
+                        return rol;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                closeDBConnection();
+            }
+        }
+        return null;
+    }
+    public void validarConsulta(String codigo) throws SQLException {
+        String sql = "SELECT validar_ticket(?)";
+        if (initDBConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, codigo);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        String mensaje = resultSet.getString(1);
+                        if (mensaje.equals("Ticket validado y estado actualizado a usado")) {
+                            System.out.println("Ticket validado y estado actualizado a usado");
+                        } else {
+                            System.out.println("Código de validación no válido o ticket ya usado");
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new SQLException("Error al validar el ticket. Intente nuevamente.");
+            } finally {
+                closeDBConnection();
+            }
+        }
+    }
+
 
 
 }
